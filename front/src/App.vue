@@ -27,7 +27,7 @@ export default {
     flex-direction: column;  /* make main axis vertical */
     justify-content: center; /* center items vertically, in this case */
     align-items: center;     /* center items horizontally, in this case */
-    height: 300px;
+    height: 700px;
 }
 
 h1 {
