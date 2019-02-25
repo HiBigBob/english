@@ -7,14 +7,15 @@
                 <div class="clear"></div>
             </div>
             <div class="letter">
-                <span class="letterChoice" id="n">n</span>
-                <span class="letterChoice" id="e">e</span>
-                <span class="letterChoice" id="i">i</span>
-                <span class="letterChoice" id="r">r</span>
-                <span class="letterChoice" id="d">d</span>
-                <span class="letterChoice" id="a">a</span>
+                <span class="letterChoice n">n</span>
+                <span class="letterChoice e">e</span>
+                <span class="letterChoice i">i</span>
+                <span class="letterChoice r">r</span>
+                <span class="letterChoice d">d</span>
+                <span class="letterChoice a">a</span>
+                <span class="letterChoice n">n</span>
             </div>
-            <input type="text" id="input" class="form-control" @keyup="keymonitor" autofocus>
+            <input type="text" id="input" class="form" @keyup="keymonitor" autofocus spellcheck="false" />
             <button class="btn btn-sm btn-primary" >Help</button>
         </div>
     </div>
@@ -37,10 +38,13 @@ export default {
             e.preventDefault();
             e = e || window.event;
 
+            console.log('1');
+
             console.log('keyup from id: '+e.target.id)
 
             // what was pressed?
             let keyMessage = 'keyup: ';
+            console.log('shiftKey ', e.shiftKey);
             if (e.shiftKey) {
                 keyMessage += 'Shift+';
             }
@@ -55,9 +59,21 @@ export default {
             if (e.shiftKey) {
                 charStr = charStr.toUpperCase();            
             }
+            console.log('2 charStr', charStr);
+            console.log('2 charCode', charCode);
 
             if (charCode > 64 && charCode < 91) {
-                document.getElementById(charStr).classList.toggle("pressed");
+                let query = `span.letterChoice.${charStr}:not(.pressed)`;
+                if (document.querySelector(query)) {
+                    document.querySelector(query).classList.toggle("pressed");
+                } else {
+                    query = `span.letterChoice.${charStr}`;
+                    const elems = document.querySelectorAll(query);
+
+                    elems.forEach((elem) => {
+                        elem.classList.toggle("pressed");
+                    });
+                }
             }
             
             var $content = document.getElementById("write");
@@ -66,6 +82,7 @@ export default {
                 this.iterator = this.iterator - 1;
                 return;
             }
+            console.log('3');
 
             if (charCode == 32) {
                 var space = document.createTextNode(" ");
@@ -73,6 +90,7 @@ export default {
             }
 
             if (this.text.length <= this.iterator) {
+                console.log('4', this.text.length <= this.iterator);
                 return;
             }
 
@@ -153,20 +171,21 @@ a {
     margin: auto;
 }
 
-.form-signin .form-control {
+.form-signin .form {
     position: relative;
     box-sizing: border-box;
     height: auto;
     font-size: 16px;
 }
 
-.form-control:focus {
+.form:focus {
   border-color: inherit;
   -webkit-box-shadow: none;
   box-shadow: none;
+  outline: none;
 }
 
-.form-control{
+.form{
     background-color: #f5f5f5;
     color: #f5f5f5;
     border: none;
