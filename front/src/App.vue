@@ -1,7 +1,11 @@
 <template>
   <div id="app">
     <h1>Practice</h1>
-    <HelloWorld msg="Practice"/>
+    <HelloWorld :practice="{
+       text: 'toto',
+       ask: 'How are --- ?',
+       answer: 'you'
+    }"/>
   </div>
 </template>
 

@@ -2,18 +2,18 @@
     <div class="hello">
         <div class="form-signin">
             <div class="practice">
-                <div id="read" class="read">{{ text }}</div>
+                <div id="ask">
+                    <span v-for="letter in ask" :class="`letterChoice ${letter != '-' ? letter : ''}`">
+                        <span :if="letter != '-' || letter != ' '">{{letter}}</span>
+                        <input :if="letter == '-'" type="text" id="input" class="form" @keyup="keymonitor" autofocus spellcheck="false" />
+                    </span>
+                </div>
+                <div id="read" class="read">{{ ask }}</div>
                 <div id="write"></div>
                 <div class="clear"></div>
             </div>
             <div class="letter">
-                <span class="letterChoice n">n</span>
-                <span class="letterChoice e">e</span>
-                <span class="letterChoice i">i</span>
-                <span class="letterChoice r">r</span>
-                <span class="letterChoice d">d</span>
-                <span class="letterChoice a">a</span>
-                <span class="letterChoice n">n</span>
+                <span v-for="letter in help" :class="`letterChoice ${letter}`">{{letter}}</span>
             </div>
             <input type="text" id="input" class="form" @keyup="keymonitor" autofocus spellcheck="false" />
             <button class="btn btn-sm btn-primary" >Help</button>
@@ -25,32 +25,28 @@
 export default {
     name: 'HelloWorld',
     props: {
-        msg: String
+        practice: Object
     },
-    data: () => {
-        return {
-            iterator: 0,
-            text: 'toto'
+    data: {
+        iterator: 0,
+    },
+    computed: {
+        help: function () {
+            const answer = this.practice.answer.toLowerCase();
+            const sort = answer.split('').sort(() => {
+                return 0.5 - Math.random();
+            });
+
+            return sort;
+        },
+        ask: function () {
+            return this.practice.ask.replace(/-/, '');
         }
     },
     methods: {
         keymonitor(e) {
             e.preventDefault();
             e = e || window.event;
-
-            console.log('1');
-
-            console.log('keyup from id: '+e.target.id)
-
-            // what was pressed?
-            let keyMessage = 'keyup: ';
-            console.log('shiftKey ', e.shiftKey);
-            if (e.shiftKey) {
-                keyMessage += 'Shift+';
-            }
-            keyMessage += e.key || String.fromCharCode(e.keyCode);
-
-            console.log(keyMessage)
 
             let charCode = e.keyCode || e.which;
             let charStr = String.fromCharCode(charCode);
@@ -59,8 +55,8 @@ export default {
             if (e.shiftKey) {
                 charStr = charStr.toUpperCase();            
             }
-            console.log('2 charStr', charStr);
-            console.log('2 charCode', charCode);
+            console.log('charStr', charStr);
+            console.log('charCode', charCode);
 
             if (charCode > 64 && charCode < 91) {
                 let query = `span.letterChoice.${charStr}:not(.pressed)`;
@@ -82,22 +78,21 @@ export default {
                 this.iterator = this.iterator - 1;
                 return;
             }
-            console.log('3');
 
             if (charCode == 32) {
                 var space = document.createTextNode(" ");
                 $content.appendChild(space);
             }
 
-            if (this.text.length <= this.iterator) {
-                console.log('4', this.text.length <= this.iterator);
+            if (this.practice.length <= this.iterator) {
+                console.log('4', this.practice.length <= this.iterator);
                 return;
             }
 
             if (charCode > 64 && charCode < 91) {
                 var char = document.createTextNode(charStr);
                 var tmp;
-                if(this.text.charAt(this.iterator) == charStr) {
+                if(this.practice.charAt(this.iterator) == charStr) {
                     tmp = char;
                 } else {
                     var $span = document.createElement("span");
@@ -127,9 +122,10 @@ export default {
 
 .letterChoice{
     border: 1px solid #283e51;
-    padding: 5px;
     border-radius: 4px;
     margin: 3px;
+    width: 22px;
+    display: inline-block;
 }
 
 .pressed {
@@ -166,7 +162,7 @@ a {
 
 .form-signin {
     width: 100%;
-    max-width: 330px;
+    /* max-width: 330px; */
     padding: 15px;
     margin: auto;
 }
