@@ -5,6 +5,9 @@ import "../styles.css"
 
 export default () => (
   <Layout>
-    <KeyBoard practice={{text: 'yahoo'}} />
+      <KeyBoard practice={{
+          ask: 'yahoos',
+          answer: 'yahoo'
+      }} />
   </Layout>
 )

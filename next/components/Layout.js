@@ -25,12 +25,12 @@ export default ({ children, title = 'This is the default title' }) => (
             >
                 <Menu.Item key="1">
                     <Link href='/'>
-                        Home
+                        <a>Home</a>
                     </Link>
                 </Menu.Item>
                 <Menu.Item key="2">
                     <Link href='/about'>
-                        About
+                        <a>About</a>
                     </Link>
                 </Menu.Item>
             </Menu>
