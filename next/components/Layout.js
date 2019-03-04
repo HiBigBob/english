@@ -40,5 +40,10 @@ export default ({ children, title = 'This is the default title' }) => (
                 {children}
             </div>
         </Content>
+        <div
+            style={{display: 'none'}}
+            id="test"
+        >
+        </div>
     </Layout>
 )

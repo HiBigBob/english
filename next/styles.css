@@ -112,7 +112,8 @@ body {
 }
 
 .letter {
-    margin: 30px;
+    margin: 20px;
+    display: inline-block;
     text-align: center;
 }
 
