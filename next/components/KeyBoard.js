@@ -12,10 +12,7 @@ export class KeyBoard extends Component {
             iterator: 0,
             randomLetterAnswer: this.getRandomLetterAnswer(props.practice.answer),
             html: "",
-            answer: [{
-                letter: 'h',
-                isCorrect: true
-            }],
+            answer: [],
             widthByLetter,
             answerWidth: `${props.practice.answer.length * widthByLetter}px`
         }
@@ -24,44 +21,42 @@ export class KeyBoard extends Component {
         this.contentEditable = React.createRef();
     }
 
-    handleChange = evt => {
-        console.log('html', this.state.html);
-        console.log('new', evt.target.value);
-
-        // this.setState({html: evt.target.value});
+    increase = () => {
+        this.setState({
+            iterator: this.state.iterator + 1 
+        });
     }
 
-    handleChangeKeyDown = e => {
+    decrease = () => {
+        if (this.state.iterator > 0) {
+            this.setState({
+                iterator: this.state.iterator - 1 
+            });
+        }
+    }
+
+    handleKeyDown = e => {
+        e.preventDefault();
+    }
+
+    handleKeyUp = e => {
         e.preventDefault();
         const charCode = e.keyCode || e.which;
         const charStr = String.fromCharCode(charCode).toLowerCase();
 
-        const { answer, randomLetterAnswer } = this.state;
+        const { answer, randomLetterAnswer, iterator } = this.state;
         const { practice } = this.props;
         const elem = document.getElementsByTagName('article')[0];
         const pos = elem.innerText.length;
-        const isCorrect = practice.answer.charAt(pos - 1) === charStr;
-        const sel = window.getSelection();
-        const position = sel.anchorOffset;
-
-        if (sel.rangeCount) {
-            let range = sel.getRangeAt(0);
-            let caretPos;
-            if (range.commonAncestorContainer.parentNode == elem) {
-                caretPos = range.endOffset;
-            }
-
-            console.log('range', range);
-            console.log('caretPos', caretPos);
-        }
+        const isCorrect = practice.answer.charAt(pos) === charStr;
 
         console.log('down charCode', charCode);
         console.log('down charStr', charStr);
         console.log('down length', pos);
-        console.log('charAt', practice.answer.charAt(pos - 1));
+        console.log('charAt', practice.answer.charAt(pos));
         console.log('isCorrect', isCorrect);
-        console.log('selection', sel);
-        console.log('position', position);
+        console.log('practice.answer.length', practice.answer.length);
+        console.log('iterator', iterator);
 
 
         if (charCode > 64 && charCode < 91) {
@@ -81,14 +76,22 @@ export class KeyBoard extends Component {
                     })
                 });
             }
+
+            this.increase();
         }
 
         if (charCode == 32) {
             answer.push({letter: '&nbsp;', isCorrect});
+            this.increase();
         }
 
         if (charCode == 8) {
             answer.pop();
+            this.decrease();
+        }
+
+        if (practice.answer.length <= iterator) {
+            return;
         }
 
         const html = answer.map((letter, index) => {
@@ -136,135 +139,6 @@ export class KeyBoard extends Component {
         }
     }
 
-    handleKeyDown(e) {
-        e.preventDefault();
-        e = e || window.event;
-        var charCode = e.keyCode || e.which;
-        var charStr = String.fromCharCode(charCode);
-
-        const { practice } = this.props
-
-        if (charCode > 64 && charCode < 91 && !practice.completed) {
-            // document.getElementById(charCode).classList.toggle("pressed");
-        }
-    }
-
-    handleKeyUp(e) {
-        e.preventDefault();
-        e = e || window.event;
-        let charCode = e.keyCode || e.which;
-        let charStr = String.fromCharCode(charCode).toLowerCase();
-
-        const { iterator, randomLetterAnswer } = this.state;
-        const { practice } = this.props;
-        const { answer } = practice;
-
-        if (answer == null) {
-            return;
-        }
-
-        console.log('charStr', charStr);
-        console.log('charCode', charCode);
-
-        if (charCode > 64 && charCode < 91) {
-            let answerTmp = randomLetterAnswer.filter((text) => {
-                return charStr === text.key && text.pressed === false
-            });
-
-            if (answerTmp.length > 0) {
-                answerTmp = answerTmp[0];
-                answerTmp.pressed = true;
-
-                this.setState({
-                    randomLetterAnswer: randomLetterAnswer.map((item, index) => {
-                        return index === answerTmp.index ? answerTmp : item;
-                    })
-                });
-            }
-        }
-        
-        var $content = document.getElementById("write");
-        if (charCode == 8 && this.iterator > 0) {
-            $content.removeChild($content.lastChild);
-            this.setState({
-                iterator: this.state.iterator - 1 
-            });
-            return;
-        }
-
-        if (charCode == 32) {
-            var space = document.createTextNode(" ");
-            $content.appendChild(space);
-        }
-
-        if (answer.length <= iterator) {
-            return;
-        }
-
-        if (charCode > 64 && charCode < 91) {
-            var char = document.createTextNode(charStr);
-            var tmp;
-            if(answer.charAt(iterator) == charStr) {
-                tmp = char;
-            } else {
-                var $span = document.createElement("span");
-                $span.style.color = "red";
-                $span.appendChild(char);
-                tmp = $span;
-            }
-            $content.appendChild(tmp);
-
-            this.setState({
-                iterator: this.state.iterator + 1 
-            });
-        }
-    }
-
-    componentDidUpdate() {
-        const { practice } = this.props;
-        const { iterator } = this.state;
-
-        if (iterator == 0) {
-            var $content = document.getElementById("write");
-            if ($content) {
-                while ($content.firstChild) {
-                    $content.removeChild($content.firstChild);
-                }
-            }
-        }
-
-	    if (typeof window !== 'undefined') {
-            // const el = document.getElementsByTagName('article')[0];
-            // const pos = el.innerText.length;
-//
-            // const range = document.createRange();
-            // const sel = window.getSelection();
-//
-            // range.setStart(el, pos);
-            // range.collapse(true);
-//
-            // sel.removeAllRanges();
-            // sel.addRange(range);
-            // el.focus();
-
-            // console.log('did update');
-        }
-    }
-
-    componentWillMount() {
-	    if (typeof window !== 'undefined') {
-            // document.addEventListener("keydown", this.handleKeyDown.bind(this), false);
-			// document.addEventListener("keyup", this.handleKeyUp.bind(this), false);
-		}
-    }
-
-    componentWillUnmount() {
-	    if (typeof window !== 'undefined') {
-			// document.removeEventListener("keydown", this.handleKeyDown.bind(this), false);
-            // document.removeEventListener("keyup", this.handleKeyUp.bind(this), false);
-		}
-    }    
-
     render() {
         const { practice } = this.props;
         const { randomLetterAnswer, answerWidth } = this.state;
@@ -273,24 +147,25 @@ export class KeyBoard extends Component {
             <div >
                 <div className="practice">
                     <div id="read">{practice.ask}</div>
-                    <div id="write"></div>
-                    <div className="clear"></div>
-                    <ContentEditable
-                      innerRef={this.contentEditable}
-                      onKeyUp={this.handleChangeKeyDown} // handle innerHTML change
-                      html={this.state.html} // innerHTML of the editable div
-                      disabled={false}       // use true to disable editing
-                      onChange={this.handleChange} // handle innerHTML change
-                      tagName='article' // Use a custom HTML tag (uses a div by default)
-                      spellCheck="false"
-                      style={{
-                          outline: 'none',
-                          borderBottom: '2px solid green',
-                          position: 'absolute',
-                          whiteSpace: 'nowrap',
-                          width: answerWidth
-                      }}
-                    />
+                    <div className="write">
+                        <ContentEditable
+                          innerRef={this.contentEditable}
+                          onKeyUp={this.handleKeyUp}
+                          onKeyDown={this.handleKeyDown}
+                          html={this.state.html}
+                          disabled={false}
+                          tagName="article"
+                          spellCheck="false"
+                          focus="true"
+                          style={{
+                              outline: 'none',
+                              borderBottom: '2px solid green',
+                              position: 'absolute',
+                              whiteSpace: 'nowrap',
+                              width: answerWidth
+                          }}
+                        />
+                    </div>
                 </div>
                 <div className="letter">
                     {randomLetterAnswer.length > 0 && 
