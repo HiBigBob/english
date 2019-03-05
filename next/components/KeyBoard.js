@@ -18,7 +18,6 @@ export class KeyBoard extends Component {
             answerWidth: `${props.practice.answer.length * widthByLetter}px`
         }
 
-        console.log('answerWidth', this.state.answerWidth);
         this.contentEditable = React.createRef();
     }
 
@@ -40,9 +39,12 @@ export class KeyBoard extends Component {
 
     increaseCursor = () => {
         let { cursorIterator } = this.state;
-        cursorIterator++;
-        this.moveCursor(cursorIterator);
-        this.setState({ cursorIterator });
+        const limit = this.props.practice.answer.length;
+        if (cursorIterator <= limit) {
+            cursorIterator++;
+            this.moveCursor(cursorIterator);
+            this.setState({ cursorIterator });
+        }
     }
 
     decreaseCursor = () => {
@@ -55,8 +57,9 @@ export class KeyBoard extends Component {
     }
 
     moveCursor = (position) => {
-        console.log('moveCursor position', position);
-	    if (typeof window !== 'undefined') {
+        const limit = this.props.practice.answer.length;
+
+        if (typeof window !== 'undefined' && position <= limit) {
             var el = document.getElementsByTagName('article')[0];
             var range = document.createRange();
             var sel = window.getSelection();
@@ -67,8 +70,6 @@ export class KeyBoard extends Component {
             sel.removeAllRanges();
             sel.addRange(range);
             el.focus();
-
-            console.log('did mount');
         }
     }
 
@@ -98,7 +99,15 @@ export class KeyBoard extends Component {
 
 
         if (charCode > 64 && charCode < 91) {
-            answer.push({letter: charStr, isCorrect});
+
+            const elem = {letter: charStr, isCorrect};
+            if (iterator > cursorIterator) {
+                answer.splice(cursorIterator, 0, elem);
+                this.moveCursor(cursorIterator);
+            } else {
+                answer.push(elem);
+            }
+
 
             let randowAnswer = randomLetterAnswer.filter((text) => {
                 return charStr === text.key && text.pressed === false
@@ -124,7 +133,11 @@ export class KeyBoard extends Component {
         }
 
         if (charCode == 8) {
-            answer.pop();
+            if (iterator > cursorIterator) {
+                answer.splice(cursorIterator, 1);
+            } else {
+                answer.pop();
+            }
             this.decrease();
         }
 
@@ -187,7 +200,9 @@ export class KeyBoard extends Component {
 
     render() {
         const { practice } = this.props;
-        const { randomLetterAnswer, answerWidth } = this.state;
+        const { randomLetterAnswer, answerWidth, cursorIterator } = this.state;
+
+        console.log('end cursorIterator', cursorIterator);
 
         return (
             <div >
