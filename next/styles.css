@@ -146,7 +146,19 @@ body {
 
 .write {
     display: flex;
-    justify-content: center;
+}
+
+.phrases {
+    margin-right: 5px;
+}
+
+.contentEditable {
+    outline: none;
+    border-bottom: 2px solid green;
+    /* position: absolute; */
+    /* white-space: nowrap; */
+    white-space: normal;
+    text-align: left;
 }
 
 h3 {

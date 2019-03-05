@@ -148,6 +148,9 @@ export class KeyBoard extends Component {
                 <div className="practice">
                     <div id="read">{practice.ask}</div>
                     <div className="write">
+                        <span className="phrases">
+                            Do you
+                        </span>
                         <ContentEditable
                           innerRef={this.contentEditable}
                           onKeyUp={this.handleKeyUp}
@@ -157,11 +160,8 @@ export class KeyBoard extends Component {
                           tagName="article"
                           spellCheck="false"
                           focus="true"
+                          className="contentEditable"
                           style={{
-                              outline: 'none',
-                              borderBottom: '2px solid green',
-                              position: 'absolute',
-                              whiteSpace: 'nowrap',
                               width: answerWidth
                           }}
                         />
