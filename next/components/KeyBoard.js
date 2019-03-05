@@ -10,6 +10,7 @@ export class KeyBoard extends Component {
 
         this.state = {
             iterator: 0,
+            cursorIterator: 0,
             randomLetterAnswer: this.getRandomLetterAnswer(props.practice.answer),
             html: "",
             answer: [],
@@ -23,15 +24,51 @@ export class KeyBoard extends Component {
 
     increase = () => {
         this.setState({
-            iterator: this.state.iterator + 1 
+            iterator: this.state.iterator + 1,
+            cursorIterator: this.state.cursorIterator + 1 
         });
     }
 
     decrease = () => {
         if (this.state.iterator > 0) {
             this.setState({
-                iterator: this.state.iterator - 1 
+                iterator: this.state.iterator - 1, 
+                cursorIterator: this.state.cursorIterator - 1 
             });
+        }
+    }
+
+    increaseCursor = () => {
+        let { cursorIterator } = this.state;
+        cursorIterator++;
+        this.moveCursor(cursorIterator);
+        this.setState({ cursorIterator });
+    }
+
+    decreaseCursor = () => {
+        let { cursorIterator } = this.state;
+        if (this.state.cursorIterator > 0) {
+            cursorIterator--;
+            this.moveCursor(cursorIterator);
+            this.setState({ cursorIterator });
+        }
+    }
+
+    moveCursor = (position) => {
+        console.log('moveCursor position', position);
+	    if (typeof window !== 'undefined') {
+            var el = document.getElementsByTagName('article')[0];
+            var range = document.createRange();
+            var sel = window.getSelection();
+
+            range.setStart(el, position);
+            range.collapse(true);
+
+            sel.removeAllRanges();
+            sel.addRange(range);
+            el.focus();
+
+            console.log('did mount');
         }
     }
 
@@ -44,7 +81,7 @@ export class KeyBoard extends Component {
         const charCode = e.keyCode || e.which;
         const charStr = String.fromCharCode(charCode).toLowerCase();
 
-        const { answer, randomLetterAnswer, iterator } = this.state;
+        const { answer, randomLetterAnswer, iterator, cursorIterator } = this.state;
         const { practice } = this.props;
         const elem = document.getElementsByTagName('article')[0];
         const pos = elem.innerText.length;
@@ -57,6 +94,7 @@ export class KeyBoard extends Component {
         console.log('isCorrect', isCorrect);
         console.log('practice.answer.length', practice.answer.length);
         console.log('iterator', iterator);
+        console.log('cursorIterator', cursorIterator);
 
 
         if (charCode > 64 && charCode < 91) {
@@ -88,6 +126,14 @@ export class KeyBoard extends Component {
         if (charCode == 8) {
             answer.pop();
             this.decrease();
+        }
+
+        if (charCode == 37) {
+            this.decreaseCursor();
+        }
+
+        if (charCode == 39) {
+            this.increaseCursor();
         }
 
         if (practice.answer.length <= iterator) {
