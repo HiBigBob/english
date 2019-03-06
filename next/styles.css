@@ -3,52 +3,26 @@
 .logo {
     background-image: url('https://antd-admin.zuiidea.com/logo.svg');
     height: 64px;
-    width: 164px;
+    width: 200px;
+    float: left;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    padding: 13px;
+}
+
+.logosmall {
+    background-image: url('https://antd-admin.zuiidea.com/logo.svg');
+    height: 64px;
+    width: 80px;
     float: left;
     font-size: 24px;
     font-weight: bold;
 }
 
-.ant-layout-header {
-    // background: white;
-    // border-bottom: 2px solid #ebedf0;
-    // box-shadow: 0 0 100px rgba(0,0,0,.08);
-
-
-    position: relative;
-    z-index: 10;
-    max-width: 100%;
-    background: #fff;
-    -webkit-box-shadow: 0 2px 8px #f0f1f2;
-    box-shadow: 0 2px 8px #f0f1f2;
-}
-
-.ant-menu-horizontal > .ant-menu-item, 
-.ant-menu-horizontal > .ant-menu-submenu {
-    border-bottom: 0;
-}
-
-.ant-menu-horizontal > .ant-menu-item:after,
-.ant-menu-horizontal > .ant-menu-item-selected:after,
-.ant-menu-horizontal > .ant-menu-item:hover,
-.ant-menu-horizontal > .ant-menu-submenu:hover,
-.ant-menu-horizontal > .ant-menu-item-active,
-.ant-menu-horizontal > .ant-menu-submenu-active,
-.ant-menu-horizontal > .ant-menu-item-open,
-.ant-menu-horizontal > .ant-menu-submenu-open,
-.ant-menu-horizontal > .ant-menu-item-selected,
-.ant-menu-horizontal > .ant-menu-submenu-selected,
-.ant-menu-horizontal > .ant-menu-item-selected,
-.ant-menu-horizontal > .ant-menu-item:hover {
-    border-top: 2px solid #1890ff;
-    border-bottom: 0;
-    // border-bottom: unset;
-}
-
-..ant-menu-horizontal {
-    // border-bottom: 2px solid #ebedf0;
-    border-bottom: none;
-    // border-bottom: unset;
+.anticon.anticon-menu-unfold.trigger,
+.anticon.anticon-menu-fold.trigger {
+    margin: 20px;
 }
 
 body {
@@ -63,58 +37,28 @@ body {
 }
 
 .container {
-    // background-color: #f8f8f8;
     background-color: white;
     overflow: hidden;
-    position: absolute;
     width: 100%;
-    height: 90%;
+    height: 300px;
     display: flex;
     justify-content: center; /*centers items on the line (the x-axis by default)*/
     align-items: center;
 }
 
 .practice {
-    margin-bottom: 30px;
+    margin: 20px;
+    width:100%;
     text-align: center;
     font-weight: bold;
     font-size: 22px;
-
-    // padding: 42px 24px 50px;
-    // color: rgba(0,0,0,0.65);
-    // border-bottom: 1px solid #ebedf0;
-    // position: relative;
-    // display: inline-block;
-    // width: 100%;
-    // margin: 0 0 16px;
-    // border: 1px solid #ebedf0;
-    // border-radius: 2px;
-    // -webkit-transition: all .2s;
-    // transition: all .2s;
-
-
-    // position: absolute;
-    // top: 45%;
-    // left: 50%;
-    // margin: -120px 0 0 -120px;
-    // width: 320px;
-    // height: 320px;
-    // padding: 36px;
-    // box-shadow: 0 0 100px rgba(0,0,0,.08);
-    // background-color: #f8f8f8;
-    // overflow: hidden;
-    // position: absolute;
-    // width: 100%;
-    // height: 100%;
-    // display: flex;
-    // justify-content: center; [>centers items on the line (the x-axis by default)<]
-    // align-items: center;
 }
 
 .letter {
     margin: 20px;
     display: inline-block;
     text-align: center;
+    width: 100%;
 }
 
 .letterChoice{
@@ -146,6 +90,8 @@ body {
 
 .write {
     display: flex;
+    justify-content: center;
+    margin: 20px;
 }
 
 .phrases {
@@ -154,11 +100,19 @@ body {
 
 .contentEditable {
     outline: none;
-    border-bottom: 2px solid green;
+    border-bottom: 2px solid #0090ff;
     /* position: absolute; */
     /* white-space: nowrap; */
     white-space: normal;
     text-align: left;
+}
+
+.steps {
+
+}
+
+.step {
+    width: 80px;
 }
 
 h3 {

@@ -1,11 +1,88 @@
 import Link from 'next/link'
 import Head from 'next/head'
 
-import { Layout, Menu } from 'antd';
+import { Layout, Menu, Progress, Icon, Breadcrumb } from 'antd';
 
-const { Header, Content, Footer } = Layout;
+const { Header, Content, Footer, Sider } = Layout;
 
-export default ({ children, title = 'This is the default title' }) => (
+export default class SiderDemo extends React.Component {
+  state = {
+    collapsed: false,
+  };
+
+  toggle = () => {
+    this.setState({
+      collapsed: !this.state.collapsed,
+    });
+  }
+
+  render() {
+    return (
+      <Layout>
+        <Sider
+          trigger={null}
+          collapsible
+          theme="light"
+          collapsed={this.state.collapsed}
+          style={{ 
+                backgroundColor: '#fff' ,
+          }}
+        >
+            <div className={this.state.collapsed ? 'logosmall' : 'logo'}>
+                {this.state.collapsed ? '' : 'English'}
+            </div>
+          <Menu theme="light" mode="inline" defaultSelectedKeys={['1']}>
+            <Menu.Item key="1">
+              <Icon type="user" />
+              <span>nav 1</span>
+            </Menu.Item>
+            <Menu.Item key="2">
+              <Icon type="video-camera" />
+              <span>nav 2</span>
+            </Menu.Item>
+            <Menu.Item key="3">
+              <Icon type="upload" />
+              <span>nav 3</span>
+            </Menu.Item>
+          </Menu>
+        </Sider>
+        <Layout>
+          <Header style={{ background: '#fff', padding: 0 }}>
+            <Icon
+              className="trigger"
+              type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
+              onClick={this.toggle}
+            />
+          </Header>
+          <Breadcrumb
+              style={{
+                  padding: '20px 20px 0px'
+              }}
+          >
+              <Breadcrumb.Item>
+                  <Icon type="home" /> Dashboard
+              </Breadcrumb.Item>
+          </Breadcrumb>
+          <Content style={{
+                height: '92vh',
+                display: 'flex',
+                justifyContent: 'center'
+          }}
+          >
+            <div className="container" style={{
+                margin: '24px',
+                background: '#fff',
+            }}>
+            {this.props.children}
+            </div>
+          </Content>
+        </Layout>
+      </Layout>
+    );
+  }
+}
+
+const old = ({ children, title = 'This is the default title' }) => (
     <Layout className="layout">
         <Head>
             <title>{title}</title>
@@ -23,6 +100,9 @@ export default ({ children, title = 'This is the default title' }) => (
                     float: 'right',
                 }}
             >
+                <Menu.Item disabled={true}>
+                    <Progress type="circle" percent={75} width={20} strokeWidth={10} showInfo={false} />
+                </Menu.Item>
                 <Menu.Item key="1">
                     <Link href='/'>
                         <a>Home</a>
@@ -35,15 +115,13 @@ export default ({ children, title = 'This is the default title' }) => (
                 </Menu.Item>
             </Menu>
         </Header>
-        <Content>
-            <div className="container">
-                {children}
-            </div>
-        </Content>
-        <div
-            style={{display: 'none'}}
-            id="test"
-        >
-        </div>
+        <Layout>
+            <Sider>Sider</Sider>
+            <Content>
+                <div className="container">
+                    {children}
+                </div>
+            </Content>
+        </Layout>
     </Layout>
 )
