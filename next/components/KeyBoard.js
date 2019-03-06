@@ -21,28 +21,11 @@ export class KeyBoard extends Component {
         this.contentEditable = React.createRef();
     }
 
-    increase = () => {
-        this.setState({
-            iterator: this.state.iterator + 1,
-            cursorIterator: this.state.cursorIterator + 1 
-        });
-    }
-
-    decrease = () => {
-        if (this.state.iterator > 0) {
-            this.setState({
-                iterator: this.state.iterator - 1, 
-                cursorIterator: this.state.cursorIterator - 1 
-            });
-        }
-    }
-
     increaseCursor = () => {
         let { cursorIterator } = this.state;
         const limit = this.props.practice.answer.length;
         if (cursorIterator <= limit) {
             cursorIterator++;
-            this.moveCursor(cursorIterator);
             this.setState({ cursorIterator });
         }
     }
@@ -51,7 +34,6 @@ export class KeyBoard extends Component {
         let { cursorIterator } = this.state;
         if (this.state.cursorIterator > 0) {
             cursorIterator--;
-            this.moveCursor(cursorIterator);
             this.setState({ cursorIterator });
         }
     }
@@ -82,32 +64,41 @@ export class KeyBoard extends Component {
         const charCode = e.keyCode || e.which;
         const charStr = String.fromCharCode(charCode).toLowerCase();
 
-        const { answer, randomLetterAnswer, iterator, cursorIterator } = this.state;
+        const { answer, randomLetterAnswer, cursorIterator } = this.state;
         const { practice } = this.props;
         const elem = document.getElementsByTagName('article')[0];
-        const pos = elem.innerText.length;
-        const isCorrect = practice.answer.charAt(pos) === charStr;
+        const isCorrect = practice.answer.charAt(cursorIterator) === charStr;
+        const iterator = answer.length;
 
-        console.log('down charCode', charCode);
-        console.log('down charStr', charStr);
-        console.log('down length', pos);
-        console.log('charAt', practice.answer.charAt(pos));
-        console.log('isCorrect', isCorrect);
-        console.log('practice.answer.length', practice.answer.length);
-        console.log('iterator', iterator);
-        console.log('cursorIterator', cursorIterator);
+        if (charCode == 37) {
+            this.decreaseCursor();
+        }
 
+        if (charCode == 39) {
+            this.increaseCursor();
+        }
+
+        if (charCode == 8) {
+            if (iterator > cursorIterator) {
+                answer.splice(cursorIterator - 1, 1);
+            } else {
+                answer.pop();
+            }
+            this.decreaseCursor();
+        }
+
+        if (practice.answer.length <= answer.length) {
+            return;
+        }
 
         if (charCode > 64 && charCode < 91) {
 
             const elem = {letter: charStr, isCorrect};
             if (iterator > cursorIterator) {
                 answer.splice(cursorIterator, 0, elem);
-                this.moveCursor(cursorIterator);
             } else {
                 answer.push(elem);
             }
-
 
             let randowAnswer = randomLetterAnswer.filter((text) => {
                 return charStr === text.key && text.pressed === false
@@ -124,39 +115,23 @@ export class KeyBoard extends Component {
                 });
             }
 
-            this.increase();
+            this.increaseCursor();
         }
 
         if (charCode == 32) {
             answer.push({letter: '&nbsp;', isCorrect});
-            this.increase();
-        }
-
-        if (charCode == 8) {
-            if (iterator > cursorIterator) {
-                answer.splice(cursorIterator, 1);
-            } else {
-                answer.pop();
-            }
-            this.decrease();
-        }
-
-        if (charCode == 37) {
-            this.decreaseCursor();
-        }
-
-        if (charCode == 39) {
             this.increaseCursor();
-        }
-
-        if (practice.answer.length <= iterator) {
-            return;
         }
 
         const html = answer.map((letter, index) => {
             const color = letter.isCorrect ? 'black' : 'red';
             return `<span style="color: ${color}">${letter.letter}</span>`;
         }).join('');
+
+        console.log('down charCode', charCode);
+        console.log('down charStr', charStr);
+        console.log('iterator', answer.length);
+        console.log('cursorIterator', this.state.cursorIterator);
 
         this.setState({
             answer,
@@ -181,28 +156,16 @@ export class KeyBoard extends Component {
         }
     }
 
-    componentDidMount() {
-	    if (typeof window !== 'undefined') {
-            var el = document.getElementsByTagName('article')[0];
-            var range = document.createRange();
-            var sel = window.getSelection();
-
-            range.setStart(el, 0);
-            range.collapse(true);
-
-            sel.removeAllRanges();
-            sel.addRange(range);
-            el.focus();
-
-            console.log('did mount');
+    componentDidUpdate() {
+        const { cursorIterator, answer } = this.state;
+        if (cursorIterator >= 0) {
+            this.moveCursor(cursorIterator);
         }
     }
 
     render() {
         const { practice } = this.props;
-        const { randomLetterAnswer, answerWidth, cursorIterator } = this.state;
-
-        console.log('end cursorIterator', cursorIterator);
+        const { randomLetterAnswer, answerWidth } = this.state;
 
         return (
             <div >
