@@ -1,13 +1,39 @@
 
+import React from 'react'
+import { connect } from 'react-redux'
+
 import { KeyBoard } from '../components/KeyBoard'
-import Layout from '../components/Layout'
 import "../styles.css"
 
-export default () => (
-  <Layout>
-      <KeyBoard practice={{
-          ask: 'yahoos',
-          answer: 'yahoo'
-      }} />
-  </Layout>
-)
+import { loadData, startClock, tickClock } from '../store/actions'
+import Layout from '../components/Layout'
+
+class Index extends React.Component {
+  static async getInitialProps (props) {
+    const { store, isServer } = props.ctx
+    store.dispatch(tickClock(isServer))
+
+    if (!store.getState().placeholderData) {
+      store.dispatch(loadData())
+    }
+
+    return { isServer }
+  }
+
+  componentDidMount () {
+    this.props.dispatch(startClock())
+  }
+
+  render () {
+      return (
+          <Layout>
+              <KeyBoard practice={{
+                  ask: 'yahoos',
+                  answer: 'yahoo'
+              }} />
+          </Layout>
+      )
+  }
+}
+
+export default connect()(Index)

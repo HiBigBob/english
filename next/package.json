@@ -7,10 +7,21 @@
   "dependencies": {
     "@zeit/next-css": "^1.0.1",
     "antd": "^3.13.6",
+    "babel-plugin-import": "^1.11.0",
+    "es6-promise": "^4.2.6",
+    "isomorphic-unfetch": "^3.0.0",
     "next": "^8.0.3",
+    "next-redux-saga": "^4.0.1",
+    "next-redux-wrapper": "^3.0.0-alpha.2",
     "node-sass": "^4.11.0",
     "react": "^16.8.3",
     "react-contenteditable": "^3.2.6",
-    "react-dom": "^16.8.3"
+    "react-dom": "^16.8.3",
+    "react-redux": "^6.0.1",
+    "redux": "^4.0.1",
+    "redux-saga": "^1.0.2"
+  },
+  "devDependencies": {
+    "redux-devtools-extension": "^2.13.8"
   }
 }

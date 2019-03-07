@@ -28,7 +28,7 @@ class NormalLoginForm extends React.Component {
                 >
                     <Form onSubmit={this.handleSubmit} className="login-form">
                         <div className="login-logo">
-                            <img src="/static/english.svg" className="img"/>
+                            <img src="/static/english.svg" className="logo-img"/>
                             <span>English</span>
                         </div>
                         <Form.Item>
