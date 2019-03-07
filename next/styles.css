@@ -1,18 +1,16 @@
-@import '~antd/dist/antd.css';
-
 .logo {
-    background-image: url('https://antd-admin.zuiidea.com/logo.svg');
+    /* background-image: url('https://antd-admin.zuiidea.com/logo.svg'); */
     height: 64px;
     width: 200px;
     float: left;
-    font-size: 24px;
+    font-size: 17px;
     font-weight: bold;
     text-align: center;
-    padding: 13px;
+    padding: 20px;
 }
 
 .logosmall {
-    background-image: url('https://antd-admin.zuiidea.com/logo.svg');
+    /* background-image: url('https://antd-admin.zuiidea.com/logo.svg'); */
     height: 64px;
     width: 80px;
     float: left;
@@ -20,12 +18,22 @@
     font-weight: bold;
 }
 
-.login-logo > .img {
-    width: 40px;
+.logo > .logo-img {
+    margin-right: 10px;
+}
+
+.logosmall > .logo-img {
+    margin-top: 17px;
+    margin-left: 22px;
+}
+
+.logo-img {
+    width: 30px;
 }
 
 .login-logo > span {
     padding-left: 5px;
+    font-size: 17px;
     font-weight:bold;
 }
 
