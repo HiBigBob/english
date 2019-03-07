@@ -3,7 +3,6 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 import KeyBoard from '../components/KeyBoard'
-import "../styles.css"
 
 import { loadData, startClock, tickClock } from '../store/actions'
 import Layout from '../components/Layout'

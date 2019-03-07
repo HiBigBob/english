@@ -3,6 +3,7 @@ import React from 'react'
 import { Provider } from 'react-redux'
 import withRedux from 'next-redux-wrapper'
 import withReduxSaga from 'next-redux-saga'
+import "../styles.css"
 
 import createStore from '../store/store'
 

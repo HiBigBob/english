@@ -3,7 +3,6 @@ import React from 'react'
 import {
     Form, Icon, Input, Button, Checkbox, Layout
 } from 'antd';
-import "../styles.css"
 
 const { Header, Content, Footer, Sider } = Layout;
 

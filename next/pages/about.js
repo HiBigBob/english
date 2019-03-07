@@ -5,7 +5,6 @@ import { connect } from 'react-redux'
 import { loadData, startClock, tickClock } from '../store/actions'
 import Layout from '../components/Layout'
 import Page from '../components/Page'
-import "../styles.css"
 
 class About extends React.Component {
   static async getInitialProps (props) {
