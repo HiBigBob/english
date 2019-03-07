@@ -1,11 +1,15 @@
 import { actionTypes } from './actions'
 
+import Lists from './lists'
+
 export const exampleInitialState = {
     count: 0,
     error: false,
     lastUpdate: 0,
     light: false,
-    placeholderData: null
+    placeholderData: null,
+    index: 0,
+    lists: Lists
 }
 
 function reducer (state = exampleInitialState, action) {

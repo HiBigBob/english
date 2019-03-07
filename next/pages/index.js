@@ -2,7 +2,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-import { KeyBoard } from '../components/KeyBoard'
+import KeyBoard from '../components/KeyBoard'
 import "../styles.css"
 
 import { loadData, startClock, tickClock } from '../store/actions'
@@ -27,10 +27,7 @@ class Index extends React.Component {
   render () {
       return (
           <Layout>
-              <KeyBoard practice={{
-                  ask: 'yahoos',
-                  answer: 'yahoo'
-              }} />
+              <KeyBoard />
           </Layout>
       )
   }

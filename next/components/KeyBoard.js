@@ -1,8 +1,9 @@
 
 import React, { Component } from 'react'
 import ContentEditable from 'react-contenteditable'
+import { connect } from 'react-redux'
 
-export class KeyBoard extends Component {
+class KeyBoard extends Component {
     constructor(props) {
         super(props)
 
@@ -11,11 +12,11 @@ export class KeyBoard extends Component {
         this.state = {
             iterator: 0,
             cursorIterator: 0,
-            randomLetterAnswer: this.getRandomLetterAnswer(props.practice.answer),
+            randomLetterAnswer: this.getRandomLetterAnswer(props.practice.lists[0].blank),
             html: "",
             answer: [],
             widthByLetter,
-            answerWidth: `${props.practice.answer.length * widthByLetter}px`
+            answerWidth: `${props.practice.lists[0].blank.length * widthByLetter}px`
         }
 
         this.contentEditable = React.createRef();
@@ -23,7 +24,7 @@ export class KeyBoard extends Component {
 
     increaseCursor = () => {
         let { cursorIterator } = this.state;
-        const limit = this.props.practice.answer.length;
+        const limit = this.props.practice.lists[0].blank.length;
         if (cursorIterator <= limit) {
             cursorIterator++;
             this.setState({ cursorIterator });
@@ -39,7 +40,7 @@ export class KeyBoard extends Component {
     }
 
     moveCursor = (position) => {
-        const limit = this.props.practice.answer.length;
+        const limit = this.props.practice.lists[0].blank.length;
 
         if (typeof window !== 'undefined' && position <= limit) {
             var el = document.getElementsByTagName('article')[0];
@@ -67,7 +68,7 @@ export class KeyBoard extends Component {
         const { answer, randomLetterAnswer, cursorIterator } = this.state;
         const { practice } = this.props;
         const elem = document.getElementsByTagName('article')[0];
-        const isCorrect = practice.answer.charAt(cursorIterator) === charStr;
+        const isCorrect = practice.lists[0].blank.charAt(cursorIterator) === charStr;
         const iterator = answer.length;
 
         if (charCode == 37) {
@@ -87,7 +88,7 @@ export class KeyBoard extends Component {
             this.decreaseCursor();
         }
 
-        if (practice.answer.length <= answer.length) {
+        if (practice.lists[0].blank.length <= answer.length) {
             return;
         }
 
@@ -150,8 +151,8 @@ export class KeyBoard extends Component {
     componentWillReceiveProps(nextProps) {
         if (nextProps.practice !== this.props.practice) {
             this.setState({
-                randomLetterAnswer: this.getRandomLetterAnswer(nextProps.practice.answer),
-                answerWidth: nextProps.practice.answer.length * this.state.widthByLetter
+                randomLetterAnswer: this.getRandomLetterAnswer(nextProps.practice.lists[0].blank),
+                answerWidth: nextProps.practice.lists[0].blank.length * this.state.widthByLetter
             });
         }
     }
@@ -167,13 +168,15 @@ export class KeyBoard extends Component {
         const { practice } = this.props;
         const { randomLetterAnswer, answerWidth } = this.state;
 
+        const sentence = practice.lists[0];
+
         return (
             <div >
                 <div className="practice">
                     <div id="read">{practice.ask}</div>
                     <div className="write">
                         <span className="phrases">
-                            Do you
+                            {sentence.text}
                         </span>
                         <ContentEditable
                           innerRef={this.contentEditable}
@@ -205,3 +208,5 @@ export class KeyBoard extends Component {
   	}
 }
 
+const mapStateToProps = ({ lists, index }) => ({ practice: lists[index] })
+export default connect(mapStateToProps)(KeyBoard)
