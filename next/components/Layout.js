@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import Head from 'next/head'
+import Router from 'next/router'
 
 import { Layout, Menu, Progress, Icon, Breadcrumb, Avatar, Dropdown } from 'antd';
 
@@ -17,6 +18,15 @@ export default class SiderDemo extends React.Component {
     }
 
     render() {
+        let current = ['1'];
+        if (typeof window !== 'undefined') {
+            const constRouter = {
+                '/': '1',
+                '/about': '2'
+            };
+
+            current = [constRouter[Router.route]];
+        }
 
         const menu = (
           <Menu style={{width: '135px'}}>
@@ -49,6 +59,7 @@ export default class SiderDemo extends React.Component {
                     <Menu 
                         theme="light" 
                         mode="inline" 
+                        defaultSelectedKeys={current}
                     >
                         <Menu.Item key="1">
                             <Link href='/'>
