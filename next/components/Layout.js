@@ -29,16 +29,16 @@ export default class SiderDemo extends React.Component {
         }
 
         const menu = (
-          <Menu style={{width: '135px'}}>
-            <Menu.Item style={{width: '135px'}}>
-                <Link href='/login'>
-                    <a>
-                        <Icon type="login" />
-                        <span style={{marginLeft: '10px'}}>Sign out</span>
-                    </a>
-                </Link>
-            </Menu.Item>
-          </Menu>
+            <Menu style={{width: '135px'}}>
+                <Menu.Item style={{width: '135px'}}>
+                    <Link href='/login'>
+                        <a>
+                            <Icon type="login" />
+                            <span style={{marginLeft: '10px'}}>Sign out</span>
+                        </a>
+                    </Link>
+                </Menu.Item>
+            </Menu>
         );
 
         return (
@@ -74,14 +74,6 @@ export default class SiderDemo extends React.Component {
                                 <a>
                                     <Icon type="video-camera" />
                                     <span>About</span>
-                                </a>
-                            </Link>
-                        </Menu.Item>
-                        <Menu.Item key="3">
-                            <Link href='/login'>
-                                <a>
-                                    <Icon type="login" />
-                                    <span>Login</span>
                                 </a>
                             </Link>
                         </Menu.Item>
