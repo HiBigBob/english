@@ -1,8 +1,10 @@
 
 import React from 'react'
+import { connect } from 'react-redux'
 import {
     Form, Icon, Input, Button, Checkbox, Layout
 } from 'antd';
+import "../styles.css"
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -61,6 +63,4 @@ class NormalLoginForm extends React.Component {
 
 const WrappedNormalLoginForm = Form.create({ name: 'normal_login' })(NormalLoginForm);
 
-export default () => (
-    <WrappedNormalLoginForm />
-)
+export default connect()(WrappedNormalLoginForm)
