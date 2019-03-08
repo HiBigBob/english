@@ -49,7 +49,8 @@ export default class SiderDemo extends React.Component {
                     theme="light"
                     collapsed={this.state.collapsed}
                     style={{ 
-                        backgroundColor: '#fff' ,
+                        backgroundColor: '#fff',
+                        height: '100vh'
                     }}
                 >
                     <div className={this.state.collapsed ? 'logosmall' : 'logo'}>
@@ -89,7 +90,7 @@ export default class SiderDemo extends React.Component {
                         <div
                             style={{
                                 float: 'right',
-                                width: '120px'
+                                width: '130px'
                             }}
                         >
                             <Dropdown overlay={menu}>

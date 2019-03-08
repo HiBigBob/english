@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import {
     Form, Icon, Input, Button, Checkbox, Layout
 } from 'antd';
-import "../styles.css"
+import "../static/styles.css"
 
 const { Header, Content, Footer, Sider } = Layout;
 
