@@ -1,6 +1,13 @@
 version: '3.6'
 
 services:
+  english_app:
+    extends:
+      file: ./front/docker-compose.yml
+      service: app
+    depends_on:
+      - english_api
+
   english_api:
     extends:
       file: ./api/docker-compose.yml
