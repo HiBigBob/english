@@ -11,7 +11,7 @@ import { configureContainer } from './container'
 import { notFoundHandler } from '../middleware/not-found'
 import { errorHandler } from '../middleware/error-handler'
 import { registerContext } from '../middleware/register-context'
-import koaMongoDb from '../middleware/mongo-connect'
+import mongoDb from '../middleware/mongo-connect'
 
 /**
  * Creates and returns a new Koa application.
@@ -36,7 +36,7 @@ export async function createServer() {
     .use(cors())
     // Parses request bodies.
     .use(bodyParser())
-    .use(koaMongoDb('mongodb://localhost/test'))
+    .use(mongoDb())
     // Creates an Awilix scope per request. Check out the awilix-koa
     // docs for details: https://github.com/jeffijoe/awilix-koa
     .use(scopePerRequest(container))
