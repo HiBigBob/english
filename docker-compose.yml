@@ -1,0 +1,15 @@
+version: '3.6'
+
+services:
+  english_api:
+    extends:
+      file: ./api/docker-compose.yml
+      service: api
+    depends_on:
+      - english_mongodb
+
+  english_mongodb:
+    extends:
+      file: ./api/docker-compose.yml
+      service: mongodb
+
