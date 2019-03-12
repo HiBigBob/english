@@ -1,15 +1,29 @@
 version: '3.6'
 
 services:
-  app:
+  api:
     tty: true
     build: .
-    command: 
+    command:
       - "yarn"
       - "dev"
     volumes:
       - "./src:/app/src"
     environment:
-      NODE_ENV: development
+      - "NODE_ENV=development"
+      - "MONGO_HOST=english_mongodb"
     ports:
       - "5000:5000"
+
+  mongodb:
+    image: mongo:latest
+    command: "mongod --smallfiles --logpath=/dev/null"
+    volumes:
+      - "./data/db:/data/db:cached"
+      - "./shell:/data/shell:cached"
+    environment:
+      - MONGO_DATA_DIR=/data/db
+      - MONGO_LOG_DIR=/dev/null
+    ports:
+      - "27018:27017"
+
