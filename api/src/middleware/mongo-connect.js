@@ -4,14 +4,14 @@ import * as MongoDB from 'mongodb'
 export default (opts) => {
   let db;
 
-  return async function MongoDb(ctx, next) {
+  return async (ctx, next) => {
     if (!db) {
       try {
         opts = opts || { useNewUrlParser: true };
         const dbHost = process.env.MONGO_HOST || "127.0.0.1";
-        const uri = `mongodb://${dbHost}:27017/english`;
-
-        db = await MongoDB.MongoClient.connect(uri, opts);
+        const uri = `mongodb://${dbHost}:27017`;
+        const client = await MongoDB.MongoClient.connect(uri, opts);
+        db = client.db('english');
       } catch (err) {
         console.log(err);
         db = undefined;
@@ -22,7 +22,7 @@ export default (opts) => {
       }
     }
 
-    ctx.db = db;
+    ctx.db = db
     return next();
   };
 };
