@@ -2,21 +2,21 @@ FROM node:lts-alpine
 # Set the working directory
 WORKDIR /app
 # Copy project specification and dependencies lock files
-COPY package.json yarn.lock ./
+COPY package.json package-lock.json ./
 
-RUN yarn
+RUN npm install
 
 # Copy app sources
 COPY . .
 # Run linters and tests
-RUN yarn lint && yarn test
+# RUN yarn lint && yarn test
 
 # Expose application port
-EXPOSE 5000
+EXPOSE 3000
 # In production environment
 RUN yarn build
 ENV NODE_ENV production
 # Run
-CMD ["yarn", "start"]
+CMD ["npm", "start"]
 
 
