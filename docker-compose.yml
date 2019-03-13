@@ -1,22 +1,46 @@
 version: '3.6'
 
 services:
-  english_app:
-    extends:
-      file: ./front/docker-compose.yml
-      service: app
-    depends_on:
-      - english_api
+  english_mongodb:
+    image: mongo:latest
+    command: "mongod --smallfiles --logpath=/dev/null"
+    volumes:
+      - "./api/data/db:/data/db:cached"
+      - "./api/shell:/data/shell:cached"
+    environment:
+      - "MONGO_DATA_DIR=/data/db"
+      - "MONGO_LOG_DIR=/dev/null"
+    ports:
+      - "27018:27017"
 
   english_api:
-    extends:
-      file: ./api/docker-compose.yml
-      service: api
+    tty: true
+    build: ./api
+    environment:
+      - "MONGO_HOST=english_mongodb"
+      - "PORT=5000"
+      - "NODE_ENV=development"
+    command:
+      - "yarn"
+      - "dev"
+    volumes:
+      - "./api/src:/app/src"
+    ports:
+      - "5000:5000"
     depends_on:
       - english_mongodb
 
-  english_mongodb:
-    extends:
-      file: ./api/docker-compose.yml
-      service: mongodb
-
+  english_app:
+    tty: true
+    build: ./front
+    command:
+      - "yarn"
+      - "dev"
+    volumes:
+      - "./front:/app/src"
+    environment:
+      - "NODE_ENV=development"
+      - "API_HOST=english_api"
+    ports:
+      - "3001:3000"
+#
