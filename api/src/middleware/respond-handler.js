@@ -64,11 +64,11 @@ function makeRespond(opts) {
       return ctx
     }
 
-    // if (opts.autoMessage && isString(payload)) {
-      // payload = {
-        // message: payload
-      // }
-    // }
+    if (opts.autoMessage && typeof payload === "string") {
+      payload = {
+        message: payload
+      }
+    }
 
     ctx.body = payload
     return ctx
