@@ -12,7 +12,7 @@ import { notFoundHandler } from '../middleware/not-found'
 import { errorHandler } from '../middleware/error-handler'
 import { registerContext } from '../middleware/register-context'
 import respondHandler from '../middleware/respond-handler'
-import mongoDb from '../middleware/mongo-connect'
+import { connect as MongoConnect, store as MongoStore } from '../middleware/mongo-connect'
 import Router from 'koa-router'
 import TestRouter from '../routes/test'
 import mount from 'koa-mount'
@@ -27,7 +27,9 @@ export async function createServer() {
   logger.debug('Creating server...')
   const app = new Koa()
 
-  const Test = new TestRouter();
+  const db = await MongoConnect()
+
+  const Test = new TestRouter()
 
   // Container is configured with our services and whatnot.
   const container = (app.container = configureContainer())
@@ -42,8 +44,8 @@ export async function createServer() {
     .use(cors())
     // Parses request bodies.
     .use(bodyParser())
-    .use(mongoDb())
-    .use(mount('/test', Test.getRouter()))
+    .use(MongoStore())
+    .use(mount('/test', Test.getRouter(db)))
     // Creates an Awilix scope per request. Check out the awilix-koa
     // docs for details: https://github.com/jeffijoe/awilix-koa
     .use(scopePerRequest(container))
