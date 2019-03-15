@@ -1,28 +1,18 @@
 import * as http from 'http'
 import Koa from 'koa'
 import cors from '@koa/cors'
-import respond from 'koa-respond'
 import bodyParser from 'koa-bodyparser'
 import compress from 'koa-compress'
-import { scopePerRequest, loadControllers } from 'awilix-koa'
 
 import { logger } from './logger'
-import { configureContainer } from './container'
 import { notFoundHandler } from '../middleware/not-found'
 import { errorHandler } from '../middleware/error-handler'
-import { registerContext } from '../middleware/register-context'
 import respondHandler from '../middleware/respond-handler'
 import { connect as MongoConnect, store as MongoStore } from '../middleware/mongo-connect'
 import Router from 'koa-router'
 import TestRouter from '../routes/test'
 import mount from 'koa-mount'
 
-/**
- * Creates and returns a new Koa application.
- * Does *NOT* call `listen`!
- *
- * @return {Promise<http.Server>} The configured app.
- */
 export async function createServer() {
   logger.debug('Creating server...')
   const app = new Koa()
@@ -31,8 +21,6 @@ export async function createServer() {
 
   const Test = new TestRouter()
 
-  // Container is configured with our services and whatnot.
-  const container = (app.container = configureContainer())
   app
     // Top middleware is the error handler.
     .use(errorHandler)
@@ -46,13 +34,6 @@ export async function createServer() {
     .use(bodyParser())
     .use(MongoStore())
     .use(mount('/test', Test.getRouter(db)))
-    // Creates an Awilix scope per request. Check out the awilix-koa
-    // docs for details: https://github.com/jeffijoe/awilix-koa
-    .use(scopePerRequest(container))
-    // Create a middleware to add request-specific data to the scope.
-    .use(registerContext)
-    // Load routes (API "controllers")
-    // .use(loadControllers('../routes/*.js', { cwd: __dirname }))
     // Default handler when nothing stopped the chain.
     .use(notFoundHandler)
 
