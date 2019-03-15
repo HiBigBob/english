@@ -32,6 +32,8 @@
     "lodash": "^4.17.11",
     "mongodb": "^3.1.13",
     "palin": "^2.2.0",
+    "oauth2-server": "git+https://github.com/HiBigBob/node-oauth2-server.git",
+    "bluebird": "^3.5.1",
     "yenv": "^2.1.0"
   },
   "devDependencies": {
