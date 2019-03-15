@@ -4,6 +4,8 @@ WORKDIR /app
 # Copy project specification and dependencies lock files
 COPY package.json yarn.lock ./
 
+RUN apk add --no-cache git
+
 RUN yarn
 
 # Copy app sources
