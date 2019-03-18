@@ -35,6 +35,7 @@
     "mongodb": "^3.1.13",
     "oauth2-server": "git+https://github.com/HiBigBob/node-oauth2-server.git",
     "palin": "^2.2.0",
+    "sha1": "^1.1.1",
     "yenv": "^2.1.0"
   },
   "devDependencies": {
