@@ -8,9 +8,12 @@ import { logger } from './logger'
 import { notFoundHandler } from '../middleware/not-found'
 import { errorHandler } from '../middleware/error-handler'
 import respondHandler from '../middleware/respond-handler'
-import { connect as MongoConnect, store as MongoStore } from '../middleware/mongo-connect'
-import Router from 'koa-router'
+import {
+  connect as MongoConnect,
+  store as MongoStore
+} from '../middleware/mongo-connect'
 import TestRouter from '../routes/test'
+import Oauth2Router from '../routes/oauth2'
 import mount from 'koa-mount'
 
 export async function createServer() {
@@ -20,6 +23,7 @@ export async function createServer() {
   const db = await MongoConnect()
 
   const Test = new TestRouter()
+  const Oauth2 = new Oauth2Router(db)
 
   app
     // Top middleware is the error handler.
@@ -33,7 +37,8 @@ export async function createServer() {
     // Parses request bodies.
     .use(bodyParser())
     .use(MongoStore())
-    .use(mount('/test', Test.getRouter(db)))
+    .use(mount('/oauth', Oauth2.getRouter()))
+    .use(mount('/test', Test.getRouter()))
     // Default handler when nothing stopped the chain.
     .use(notFoundHandler)
 
