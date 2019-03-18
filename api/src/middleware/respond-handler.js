@@ -1,4 +1,3 @@
-
 const NO_CONTENT = 204
 
 const statusCodeMap = {
@@ -64,7 +63,7 @@ function makeRespond(opts) {
       return ctx
     }
 
-    if (opts.autoMessage && typeof payload === "string") {
+    if (opts.autoMessage && typeof payload === 'string') {
       payload = {
         message: payload
       }

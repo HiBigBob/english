@@ -1,12 +1,11 @@
-
 import Router from 'koa-router'
 
 export default class Abstract {
   constructor() {
-    this.router = new Router();
+    this.router = new Router()
   }
 
   getRouter() {
-    return this.router.routes();
+    return this.router.routes()
   }
 }
