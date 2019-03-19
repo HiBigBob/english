@@ -2,9 +2,11 @@ FROM node:lts-alpine
 # Set the working directory
 WORKDIR /app
 # Copy project specification and dependencies lock files
-COPY package.json package-lock.json ./
+COPY package.json yarn.lock ./
 
-RUN npm install
+RUN apk add --no-cache git
+
+RUN yarn
 
 # Copy app sources
 COPY . .
@@ -17,6 +19,6 @@ EXPOSE 3000
 RUN yarn build
 ENV NODE_ENV production
 # Run
-CMD ["npm", "start"]
+CMD ["yarn", "start"]
 
 
