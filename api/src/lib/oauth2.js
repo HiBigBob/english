@@ -44,7 +44,7 @@ class Oauth2Server {
 
     return (ctx, next) => {
       let request = new Request(ctx.request)
-      let response = new Response(ctx.response)
+      let response = new Response({})
 
       return Promise.bind(that)
         .then(() => {
@@ -52,7 +52,7 @@ class Oauth2Server {
         })
         .tap(token => {
           ctx.state.oauth = { token: token }
-          next()
+          return next()
         })
         .catch(e => {
           return handleError.call(this, e, ctx, response, null, next)
@@ -65,7 +65,7 @@ class Oauth2Server {
 
     return (ctx, next) => {
       let request = new Request(ctx.request)
-      let response = new Response(ctx.response)
+      let response = new Response({})
 
       return Promise.bind(that)
         .then(() => {
@@ -91,7 +91,7 @@ class Oauth2Server {
 
     return (ctx, next) => {
       let request = new Request(ctx.request)
-      let response = new Response(ctx.response)
+      let response = new Response({})
 
       return Promise.bind(that)
         .then(() => {
