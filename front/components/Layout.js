@@ -1,3 +1,5 @@
+
+import React from 'react'
 import Link from 'next/link'
 import Head from 'next/head'
 import Router from 'next/router'
@@ -6,7 +8,7 @@ import { Layout, Menu, Progress, Icon, Breadcrumb, Avatar, Dropdown } from 'antd
 
 const { Header, Content, Footer, Sider } = Layout;
 
-export default class SiderDemo extends React.Component {
+export default class LayoutComponent extends React.Component {
     state = {
         collapsed: false,
     };
@@ -48,7 +50,7 @@ export default class SiderDemo extends React.Component {
                     collapsible
                     theme="light"
                     collapsed={this.state.collapsed}
-                    style={{ 
+                    style={{
                         backgroundColor: '#fff',
                         height: '100vh'
                     }}
@@ -57,9 +59,9 @@ export default class SiderDemo extends React.Component {
                         <img src="/static/english.svg" className="logo-img"/>
                         {this.state.collapsed ? '' : 'English'}
                     </div>
-                    <Menu 
-                        theme="light" 
-                        mode="inline" 
+                    <Menu
+                        theme="light"
+                        mode="inline"
                         defaultSelectedKeys={current}
                     >
                         <Menu.Item key="1">
@@ -90,12 +92,11 @@ export default class SiderDemo extends React.Component {
                         <div
                             style={{
                                 float: 'right',
-                                width: '130px'
                             }}
                         >
                             <Dropdown overlay={menu}>
                                 <div>
-                                    <span style={{paddingRight: '10px'}}>Hi Adrien</span>
+                                    <span style={{paddingRight: '10px'}}>Hi {this.props.user.firstName}</span>
                                     <Avatar style={{ marginRight: '10px', backgroundColor: '#0094ff' }} icon="user" />
                                 </div>
                             </Dropdown>
