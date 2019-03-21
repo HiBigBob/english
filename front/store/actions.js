@@ -6,7 +6,10 @@ export const actionTypes = {
     LOAD_DATA: 'LOAD_DATA',
     LOAD_DATA_SUCCESS: 'LOAD_DATA_SUCCESS',
     START_CLOCK: 'START_CLOCK',
-    TICK_CLOCK: 'TICK_CLOCK'
+    TICK_CLOCK: 'TICK_CLOCK',
+    LOAD_USER: 'LOAD_USER',
+    LOAD_USER_SUCCESS: 'LOAD_USER_SUCCESS',
+    SET_TOKEN: 'SET_TOKEN',
 }
 
 export function failure (error) {
@@ -30,6 +33,24 @@ export function reset () {
 
 export function loadData () {
     return { type: actionTypes.LOAD_DATA }
+}
+
+export function loadUser () {
+    return { type: actionTypes.LOAD_USER }
+}
+
+export function loadUserSuccess (data) {
+    return {
+        type: actionTypes.LOAD_USER_SUCCESS,
+        data
+    }
+}
+
+export function setToken (data) {
+    return {
+        type: actionTypes.SET_TOKEN,
+        data
+    }
 }
 
 export function loadDataSuccess (data) {
