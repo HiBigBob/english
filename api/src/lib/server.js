@@ -14,6 +14,7 @@ import {
 } from '../middleware/mongo-connect'
 import TestRouter from '../routes/test'
 import Oauth2Router from '../routes/oauth2'
+import UserRouter from '../routes/user'
 import mount from 'koa-mount'
 
 export async function createServer() {
@@ -24,6 +25,7 @@ export async function createServer() {
 
   const Test = new TestRouter()
   const Oauth2 = new Oauth2Router(db)
+  const User = new UserRouter(db)
 
   app
     // Top middleware is the error handler.
@@ -39,6 +41,7 @@ export async function createServer() {
     .use(MongoStore())
     .use(mount('/oauth', Oauth2.getRouter()))
     .use(mount('/test', Test.getRouter()))
+    .use(mount('/user', User.getRouter()))
     // Default handler when nothing stopped the chain.
     .use(notFoundHandler)
 
