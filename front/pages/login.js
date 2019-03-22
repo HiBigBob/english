@@ -8,72 +8,32 @@ import {
 } from 'antd';
 import "../static/styles.css"
 import { login } from '../utils/auth'
-import { setToken, loadUser } from '../store/actions'
+import { setToken, loadUser, getToken } from '../store/actions'
 
 const { Header, Content, Footer, Sider } = Layout;
 
 class NormalLoginForm extends React.Component {
-  static getInitialProps ({ctx}) {
-    const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http'
-    const { store } = ctx
-    return { apiUrl: 'http://localhost:5000' }
-  }
-
   constructor (props) {
     super(props)
 
     this.state = { error: '' }
-    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
-  async handleSubmit (e) {
-
-    // console.log('props', this.props);
+  handleSubmit = (e) => {
     e.preventDefault();
-    this.props.form.validateFields(async (err, values) => {
+    this.props.form.validateFields((err, values) => {
       if (err) {
         console.log('DO NOT Received values of form: ', err);
-      } else {
-        console.log('Received values of form: ', values);
       }
 
-      const url = `${this.props.apiUrl}/oauth/token`
-
-      try {
-        const response = await fetch(url, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Authorization': 'Basic ZW5nbGlzaC1hcHA6cHBhLWhzaWxnbmU='
-          },
-          body: qs.stringify({
-            grant_type: 'password',
-            scope: 'practice',
-            username: 'hibigbob@gmail.com',
-            password: 'test'
-          })
-        })
-
-        if (response.ok) {
-          const token = await response.json()
-          const set = await this.props.dispatch(setToken(token.access_token))
-          const getUser = await this.props.dispatch(loadUser())
-          login({ token: token.access_token })
-        } else {
-          console.log('Login failed.')
-          // https://github.com/developit/unfetch#caveats
-          let error = new Error(response.statusText)
-          error.response = response
-          throw error
-        }
-      } catch (error) {
-        console.error(
-          'You have an error in your code or there are Network issues.',
-          error
-        )
-        this.setState({ error: error.message })
-      }
+      this.props.dispatch(getToken(values));
     });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.token !== nextProps.token && nextProps.token != null) {
+      login({ token: nextProps.token })
+    }
   }
 
   render() {
@@ -121,4 +81,6 @@ class NormalLoginForm extends React.Component {
 
 const WrappedNormalLoginForm = Form.create({ name: 'normal_login' })(NormalLoginForm);
 
-export default connect()(WrappedNormalLoginForm)
+export default connect(state => ({
+    token: state.token
+}))(WrappedNormalLoginForm)
