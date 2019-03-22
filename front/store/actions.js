@@ -10,6 +10,7 @@ export const actionTypes = {
     LOAD_USER: 'LOAD_USER',
     LOAD_USER_SUCCESS: 'LOAD_USER_SUCCESS',
     SET_TOKEN: 'SET_TOKEN',
+    GET_TOKEN: 'GET_TOKEN',
 }
 
 export function failure (error) {
@@ -42,6 +43,13 @@ export function loadUser () {
 export function loadUserSuccess (data) {
     return {
         type: actionTypes.LOAD_USER_SUCCESS,
+        data
+    }
+}
+
+export function getToken (data) {
+    return {
+        type: actionTypes.GET_TOKEN,
         data
     }
 }
