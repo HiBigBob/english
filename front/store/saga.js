@@ -4,7 +4,12 @@ import { all, call, delay, put, take, takeLatest, select } from 'redux-saga/effe
 import es6promise from 'es6-promise'
 import 'isomorphic-unfetch'
 
-import { actionTypes, failure, loadDataSuccess, tickClock, loadUserSuccess } from './actions'
+import {
+    getUser,
+    getToken
+} from './api';
+
+import { actionTypes, failure, loadDataSuccess, setToken, tickClock, loadUserSuccess } from './actions'
 
 es6promise.polyfill()
 
@@ -19,14 +24,22 @@ function * runClockSaga () {
 function * loadUserSaga () {
     const token = yield select(state => state.token)
     try {
-        const res = yield fetch('http://localhost:5000/user', {
-          method: "GET",
-          headers: {
-            "Authorization": `Bearer ${token}`
-          },
-        })
-        const data = yield res.json()
+        const data = yield call(getUser, token);
         yield put(loadUserSuccess(data))
+    } catch (err) {
+        yield put(failure(err))
+    }
+}
+
+function * getTokenSaga ({data}) {
+    try {
+        const token = yield call(getToken, data);
+        console.log('token api', token);
+        const user = yield call(getUser, token.access_token);
+        yield all([
+            put(setToken(token.access_token)),
+            put(loadUserSuccess(user)),
+        ])
     } catch (err) {
         yield put(failure(err))
     }
@@ -46,7 +59,8 @@ function * rootSaga () {
     yield all([
         call(runClockSaga),
         takeLatest(actionTypes.LOAD_DATA, loadDataSaga),
-        takeLatest(actionTypes.LOAD_USER, loadUserSaga)
+        takeLatest(actionTypes.LOAD_USER, loadUserSaga),
+        takeLatest(actionTypes.GET_TOKEN, getTokenSaga)
     ])
 }
 
