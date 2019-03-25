@@ -92,6 +92,7 @@ export default class LayoutComponent extends React.Component {
                         <div
                             style={{
                                 float: 'right',
+                                paddingRight: '15px'
                             }}
                         >
                             <Dropdown overlay={menu}>
@@ -120,6 +121,7 @@ export default class LayoutComponent extends React.Component {
                     <div className="container" style={{
                         margin: '24px',
                         background: '#fff',
+                        height: '90%'
                     }}>
                         {this.props.children}
                     </div>
