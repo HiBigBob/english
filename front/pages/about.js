@@ -79,9 +79,11 @@ class About extends React.Component {
   }
 
   render () {
+    // const data = {
+      // en: ['en', 'en1'],
+      // fr: ['fr', 'fr1']
+    // };
     const data = {
-      en: ['en', 'en1'],
-      fr: ['fr', 'fr1']
     };
 
     return (
