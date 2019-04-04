@@ -203,7 +203,6 @@ class DrawerForm extends React.Component {
   };
 
   render() {
-    console.log('props init', this.props);
     const { getFieldDecorator } = this.props.form;
     return (
       <div>
