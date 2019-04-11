@@ -1,6 +1,7 @@
 import { createServer } from '../lib/server'
 import { memoize } from 'lodash'
 import axios from 'axios'
+import qs from 'querystring'
 
 /**
  * API helper to make it easier to test endpoints.
@@ -22,7 +23,21 @@ export async function apiHelper() {
     createTodo: data => client.post('/todos', data).then(assertStatus(201)),
     updateTodo: (id, data) =>
       client.patch(`/todos/${id}`, data).then(assertStatus(200)),
-    removeTodo: id => client.delete(`/todos/${id}`).then(assertStatus(204))
+    removeTodo: id => client.delete(`/todos/${id}`).then(assertStatus(204)),
+    findTest: params => client.get(`/test`, { params }).then(assertStatus(200)),
+    findByIdVerb: id => client.get(`/verbs/verb/${id}`).then(assertStatus(200)),
+    notFindByIdVerb: id =>
+      client.get(`/verbs/verb/${id}`).then(assertStatus(404)),
+    findVerb: params =>
+      client.get(`/verbs`, { params }).then(assertStatus(200)),
+    createVerb: data => client.post(`/verbs`, data).then(assertStatus(201)),
+    updateVerb: (id, data) =>
+      client.put(`/verbs/${id}`, data).then(assertStatus(200)),
+    removeVerb: id => client.delete(`/verbs/${id}`).then(assertStatus(204)),
+    getToken: (data, header) =>
+      client
+        .post('/oauth/token', qs.stringify(data), { headers: header })
+        .then(assertStatus(200))
   }
 }
 
