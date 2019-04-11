@@ -30,17 +30,17 @@ services:
     depends_on:
       - english_mongodb
 
-  english_app:
-    tty: true
-    build: ./front
-    command:
-      - "yarn"
-      - "dev"
-    volumes:
-      - "./front:/app/src"
-    environment:
-      - "NODE_ENV=development"
-      - "API_HOST=english_api"
-    ports:
-      - "3001:3000"
+  # english_app:
+    # tty: true
+    # build: ./front
+    # command:
+      # - "yarn"
+      # - "dev"
+    # volumes:
+      # - "./front:/app/src"
+    # environment:
+      # - "NODE_ENV=development"
+      # - "API_HOST=english_api"
+    # ports:
+      # - "3001:3000"
 #
