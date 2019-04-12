@@ -7,11 +7,13 @@ const connect = async () => {
     try {
       const dbHost = process.env.MONGO_HOST || '127.0.0.1'
       const uri = `mongodb://${dbHost}:27017`
+      const dbName =
+        process.env.NODE_ENV === 'test' ? 'english-test' : 'english'
       const client = await MongoDB.MongoClient.connect(
         uri,
         { useNewUrlParser: true }
       )
-      db = client.db('english')
+      db = client.db(dbName)
     } catch (err) {
       console.log(err)
       db = undefined
